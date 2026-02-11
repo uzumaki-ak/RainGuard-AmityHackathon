@@ -48,6 +48,8 @@ import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.Polygon
 import org.osmdroid.views.overlay.Polyline
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
+import kotlin.math.cos
+import kotlin.math.sin
 
 @OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -94,53 +96,6 @@ fun HomeMapScreen(
                     }
                 }
             )
-        },
-        floatingActionButton = {
-            Column(
-                horizontalAlignment = Alignment.End,
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                SmallFloatingActionButton(
-                    onClick = { navController.navigate(NavRoutes.CHAT) },
-                    containerColor = MaterialTheme.colorScheme.tertiary
-                ) {
-                    Icon(Icons.Default.Chat, contentDescription = "Chat Assistant")
-                }
-                
-                SmallFloatingActionButton(
-                    onClick = { navController.navigate(NavRoutes.REPORT) },
-                    containerColor = MaterialTheme.colorScheme.secondary
-                ) {
-                    Icon(Icons.Default.Camera, contentDescription = stringResource(R.string.report_incident))
-                }
-                
-                val infiniteTransition = rememberInfiniteTransition(label = "pulse")
-                val scale by infiniteTransition.animateFloat(
-                    initialValue = 1f,
-                    targetValue = 1.1f,
-                    animationSpec = infiniteRepeatable(
-                        animation = tween(1000),
-                        repeatMode = RepeatMode.Reverse
-                    ),
-                    label = "scale"
-                )
-                
-                FloatingActionButton(
-                    onClick = {
-                        state.nearestShelter?.let {
-                            viewModel.requestEvacuationRoute(it.id)
-                        }
-                    },
-                    containerColor = Success,
-                    modifier = Modifier.scale(if (state.currentRisk == RiskSeverity.HIGH) scale else 1f)
-                ) {
-                    Icon(
-                        Icons.Default.DirectionsRun,
-                        contentDescription = stringResource(R.string.evacuate),
-                        tint = Color.White
-                    )
-                }
-            }
         }
     ) { padding ->
         Box(
@@ -156,7 +111,7 @@ fun HomeMapScreen(
                     riskZones = state.riskZones,
                     shelters = state.shelters,
                     reports = state.reports,
-                    activeRoute = null, // Can be updated when a route is computed
+                    activeRoute = null,
                     onShelterClick = { shelterId ->
                         navController.navigate(NavRoutes.shelter(shelterId))
                     },
@@ -171,11 +126,66 @@ fun HomeMapScreen(
                     }
                 )
 
+                // Buttons Column (Circle FABs)
+                Column(
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(16.dp)
+                        .padding(bottom = 100.dp),
+                    horizontalAlignment = Alignment.End,
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    SmallFloatingActionButton(
+                        onClick = { navController.navigate(NavRoutes.CHAT) },
+                        containerColor = MaterialTheme.colorScheme.tertiary,
+                        shape = CircleShape
+                    ) {
+                        Icon(Icons.Default.Chat, contentDescription = "Chat Assistant")
+                    }
+                    
+                    SmallFloatingActionButton(
+                        onClick = { navController.navigate(NavRoutes.REPORT) },
+                        containerColor = MaterialTheme.colorScheme.secondary,
+                        shape = CircleShape
+                    ) {
+                        Icon(Icons.Default.Camera, contentDescription = stringResource(R.string.report_incident))
+                    }
+                    
+                    val infiniteTransition = rememberInfiniteTransition(label = "pulse")
+                    val scale by infiniteTransition.animateFloat(
+                        initialValue = 1f,
+                        targetValue = 1.1f,
+                        animationSpec = infiniteRepeatable(
+                            animation = tween(1000),
+                            repeatMode = RepeatMode.Reverse
+                        ),
+                        label = "scale"
+                    )
+                    
+                    FloatingActionButton(
+                        onClick = {
+                            state.nearestShelter?.let {
+                                viewModel.requestEvacuationRoute(it.id)
+                                navController.navigate(NavRoutes.evacuationRoute("route1"))
+                            }
+                        },
+                        containerColor = Success,
+                        shape = CircleShape,
+                        modifier = Modifier.scale(if (state.currentRisk == RiskSeverity.HIGH) scale else 1f)
+                    ) {
+                        Icon(
+                            Icons.Default.DirectionsRun,
+                            contentDescription = stringResource(R.string.evacuate),
+                            tint = Color.White
+                        )
+                    }
+                }
+
+                // Status Row
                 Box(
                     modifier = Modifier
                         .align(Alignment.BottomCenter)
                         .padding(16.dp)
-                        .padding(bottom = 80.dp) // Space for status row
                 ) {
                     Surface(
                         onClick = { showRiskSheet = true },
@@ -196,7 +206,7 @@ fun HomeMapScreen(
                                 )
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     Text(
-                                        text = "Confidence: ${(state.currentConfidence * 100).toInt()}%",
+                                        text = stringResource(R.string.confidence_label, (state.currentConfidence * 100).toInt()),
                                         style = MaterialTheme.typography.bodyMedium,
                                         fontWeight = FontWeight.Bold
                                     )
@@ -261,7 +271,7 @@ fun RiskBottomSheetContent(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "Live Status",
+                text = stringResource(R.string.live_status),
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold
             )
@@ -279,7 +289,7 @@ fun RiskBottomSheetContent(
         ) {
             Icon(Icons.Default.DirectionsRun, contentDescription = null)
             Spacer(modifier = Modifier.width(8.dp))
-            Text("Evacuate to Nearest Shelter")
+            Text(stringResource(R.string.evacuate_nearest))
         }
 
         Spacer(modifier = Modifier.height(12.dp))
@@ -291,14 +301,14 @@ fun RiskBottomSheetContent(
         ) {
             Icon(Icons.Default.Report, contentDescription = null)
             Spacer(modifier = Modifier.width(8.dp))
-            Text("Report Flood / Damage")
+            Text(stringResource(R.string.report_flood_damage))
         }
 
         Spacer(modifier = Modifier.height(24.dp))
 
         state.nearestShelter?.let { shelter ->
             Text(
-                text = "Nearest Shelter Info",
+                text = stringResource(R.string.nearest_shelter_info),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold
             )
@@ -311,7 +321,11 @@ fun RiskBottomSheetContent(
                     Text(shelter.name, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Bold)
                     Text(shelter.address, style = MaterialTheme.typography.bodySmall)
                     Spacer(modifier = Modifier.height(8.dp))
-                    Text("Available: ${shelter.available}/${shelter.capacity}", color = Success, fontWeight = FontWeight.Bold)
+                    Text(
+                        text = "${stringResource(R.string.available)}: ${shelter.available}/${shelter.capacity}",
+                        color = Success,
+                        fontWeight = FontWeight.Bold
+                    )
                 }
             }
         }
@@ -367,7 +381,7 @@ fun ReportDetailBottomSheet(report: Report) {
             Spacer(modifier = Modifier.height(16.dp))
         }
 
-        Text(text = "Description", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+        Text(text = stringResource(R.string.description), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
         Text(text = report.description, style = MaterialTheme.typography.bodyLarge)
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -417,7 +431,7 @@ fun OSMMapView(
         locationOverlay.enableMyLocation()
         mapView.overlays.add(locationOverlay)
 
-        // Events Overlay for Long Press
+        // Events Overlay
         val eventsOverlay = MapEventsOverlay(object : MapEventsReceiver {
             override fun singleTapConfirmedHelper(p: GeoPoint?): Boolean = false
             override fun longPressHelper(p: GeoPoint?): Boolean {
@@ -427,23 +441,33 @@ fun OSMMapView(
         })
         mapView.overlays.add(eventsOverlay)
 
-        // Risk Zones (Heatmap/Polygons)
+        // Circular Risk Zones
         riskZones.forEach { zone ->
-            val polygon = Polygon(mapView)
-            val points = zone.coordinates.map { GeoPoint(it[1], it[0]) }
-            polygon.points = points
-            val color = when(zone.severity) {
-                RiskSeverity.HIGH -> android.graphics.Color.argb(100, 255, 0, 0)
-                RiskSeverity.MEDIUM -> android.graphics.Color.argb(100, 255, 165, 0)
-                RiskSeverity.LOW -> android.graphics.Color.argb(100, 0, 255, 0)
+            val circlePolygon = Polygon(mapView)
+            val center = GeoPoint(zone.coordinates[0][1], zone.coordinates[0][0])
+            val radius = 500.0 // Radius in meters
+            val points = mutableListOf<GeoPoint>()
+            for (i in 0 until 360 step 10) {
+                points.add(calculatePointWithRadius(center, radius, i.toDouble()))
             }
-            polygon.fillPaint.color = color
-            polygon.outlinePaint.color = color
-            polygon.outlinePaint.strokeWidth = 2f
-            mapView.overlays.add(polygon)
+            circlePolygon.points = points
+            
+            // Fix empty bubble: Set title and snippet for Polygon
+            circlePolygon.title = zone.name
+            circlePolygon.snippet = zone.reason
+            
+            val color = when(zone.severity) {
+                RiskSeverity.HIGH -> android.graphics.Color.argb(80, 255, 0, 0)
+                RiskSeverity.MEDIUM -> android.graphics.Color.argb(80, 255, 165, 0)
+                RiskSeverity.LOW -> android.graphics.Color.argb(80, 0, 255, 0)
+            }
+            circlePolygon.fillPaint.color = color
+            circlePolygon.outlinePaint.color = color
+            circlePolygon.outlinePaint.strokeWidth = 2f
+            mapView.overlays.add(circlePolygon)
         }
 
-        // Active Route (Green Line)
+        // Active Route
         activeRoute?.let { route ->
             val line = Polyline(mapView)
             line.setPoints(route.path.map { GeoPoint(it[1], it[0]) })
@@ -452,14 +476,21 @@ fun OSMMapView(
             mapView.overlays.add(line)
         }
 
-        // Shelters (House Icons)
+        // Shelters
         shelters.forEach { shelter ->
             val marker = Marker(mapView).apply {
                 position = GeoPoint(shelter.lat, shelter.lng)
                 title = shelter.name
+                snippet = shelter.address
                 icon = context.getDrawable(R.drawable.ic_shelter)
                 setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-                setOnMarkerClickListener { _, _ ->
+                
+                // Allow InfoWindow to show by manually calling showInfoWindow or returning false
+                setOnMarkerClickListener { m, _ ->
+                    m.showInfoWindow()
+                    // If we want to navigate immediately, we can do it here, 
+                    // but usually tapping the InfoWindow or a button in it is better.
+                    // For now, let's just trigger the callback
                     onShelterClick(shelter.id)
                     true
                 }
@@ -467,18 +498,21 @@ fun OSMMapView(
             mapView.overlays.add(marker)
         }
 
-        // Reports (Clustered Pins - simplified for now)
+        // Reports
         reports.forEach { report ->
             val marker = Marker(mapView).apply {
                 position = GeoPoint(report.lat, report.lng)
                 title = report.type.toDisplayString()
+                snippet = report.description
                 icon = when(report.type) {
                     ReportType.FLOOD -> context.getDrawable(R.drawable.ic_alert)
                     ReportType.REQUEST_HELP -> context.getDrawable(R.drawable.ic_citizen)
                     else -> context.getDrawable(R.drawable.ic_report)
                 }
                 setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-                setOnMarkerClickListener { _, _ ->
+                
+                setOnMarkerClickListener { m, _ ->
+                    m.showInfoWindow()
                     onReportClick(report)
                     true
                 }
@@ -491,4 +525,17 @@ fun OSMMapView(
     }
 
     AndroidView(factory = { mapView }, modifier = Modifier.fillMaxSize())
+}
+
+private fun calculatePointWithRadius(center: GeoPoint, radiusInMeters: Double, bearing: Double): GeoPoint {
+    val radiusInKm = radiusInMeters / 1000.0
+    val radiusInRadians = radiusInKm / 6371.0
+    val lat1 = Math.toRadians(center.latitude)
+    val lng1 = Math.toRadians(center.longitude)
+    val bearingRad = Math.toRadians(bearing)
+
+    val lat2 = Math.asin(sin(lat1) * cos(radiusInRadians) + cos(lat1) * sin(radiusInRadians) * cos(bearingRad))
+    val lng2 = lng1 + Math.atan2(sin(bearingRad) * sin(radiusInRadians) * cos(lat1), cos(radiusInRadians) - sin(lat1) * sin(lat2))
+
+    return GeoPoint(Math.toDegrees(lat2), Math.toDegrees(lng2))
 }

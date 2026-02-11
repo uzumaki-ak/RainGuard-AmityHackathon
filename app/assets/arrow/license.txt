@@ -1,0 +1,11 @@
+Model Information:
+* title:	ARROW
+* source:	https://sketchfab.com/3d-models/arrow-ee90462ab09043a3aef47b1760268061
+* author:	PropShop (https://sketchfab.com/syedabbas0815)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "ARROW" (https://sketchfab.com/3d-models/arrow-ee90462ab09043a3aef47b1760268061) by PropShop (https://sketchfab.com/syedabbas0815) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

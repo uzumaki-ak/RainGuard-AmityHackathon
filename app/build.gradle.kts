@@ -139,6 +139,10 @@ dependencies {
     implementation("androidx.camera:camera-lifecycle:1.3.2")
     implementation("androidx.camera:camera-view:1.3.2")
 
+    // ARCore & SceneView
+    implementation("com.google.ar:core:1.41.0")
+    implementation("io.github.sceneview:arsceneview:0.10.0")
+
     // Testing
     testImplementation("junit:junit:4.13.2")
     testImplementation("io.mockk:mockk:1.13.10")

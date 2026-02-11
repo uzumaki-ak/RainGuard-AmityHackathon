@@ -18,12 +18,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import com.rainguard.ai.R
 import com.rainguard.ai.data.model.Report
 import com.rainguard.ai.data.model.Route
 import com.rainguard.ai.data.model.Shelter
@@ -39,12 +41,17 @@ fun AuthorityDashboardScreen(
 ) {
     val state by viewModel.state.collectAsState()
     var selectedTab by remember { mutableStateOf(0) }
-    val tabs = listOf("Overview", "Incidents", "Shelters", "Reports")
+    val tabs = listOf(
+        stringResource(R.string.overview),
+        stringResource(R.string.incidents),
+        stringResource(R.string.shelters),
+        stringResource(R.string.reports)
+    )
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Command Center", fontWeight = FontWeight.Bold) },
+                title = { Text(stringResource(R.string.command_center), fontWeight = FontWeight.Bold) },
                 actions = {
                     IconButton(onClick = { navController.navigate(NavRoutes.SETTINGS) }) {
                         Icon(Icons.Default.Settings, contentDescription = "Settings")
@@ -94,21 +101,43 @@ fun OverviewTab(state: AuthorityDashboardState, viewModel: AuthorityDashboardVie
     ) {
         item {
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                StatCard("Active Reports", state.pendingReports.toString(), Icons.Default.Report, Warning, Modifier.weight(1f))
-                StatCard("Risk Level", "HIGH", Icons.Default.TrendingUp, Error, Modifier.weight(1f))
+                StatCard(stringResource(R.string.active_reports), state.pendingReports.toString(), Icons.Default.Report, Warning, Modifier.weight(1f))
+                StatCard(stringResource(R.string.risk_level), "HIGH", Icons.Default.TrendingUp, Error, Modifier.weight(1f))
             }
         }
 
         state.suggestedRoute?.let { route ->
             item {
-                Text("Action Required", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                Text(stringResource(R.string.action_required), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                 Spacer(modifier = Modifier.height(8.dp))
                 SuggestedRouteCard(route, onApprove = { viewModel.approveRoute(route.id) }, onReject = { viewModel.rejectRoute(route.id) })
             }
         }
 
         item {
-            Text("Regional Risk Index", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+            Text(stringResource(R.string.regional_risk_index), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+            Spacer(modifier = Modifier.height(8.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                TimeFilter.values().forEach { filter ->
+                    val filterLabel = when(filter) {
+                        TimeFilter.DAILY -> stringResource(R.string.daily)
+                        TimeFilter.WEEKLY -> stringResource(R.string.weekly)
+                        TimeFilter.MONTHLY -> stringResource(R.string.monthly)
+                    }
+                    FilterChip(
+                        selected = state.selectedFilter == filter,
+                        onClick = { viewModel.setFilter(filter) },
+                        label = { Text(filterLabel) },
+                        colors = FilterChipDefaults.filterChipColors(
+                            selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                            selectedLabelColor = MaterialTheme.colorScheme.primary
+                        )
+                    )
+                }
+            }
             Spacer(modifier = Modifier.height(8.dp))
             RiskTrendChart(trends = state.riskTrends)
         }
@@ -127,7 +156,7 @@ fun IncidentsTab(state: AuthorityDashboardState, viewModel: AuthorityDashboardVi
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         item {
-            Text("Active Incidents", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
+            Text(stringResource(R.string.active_incidents), style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
             Spacer(modifier = Modifier.height(8.dp))
         }
         items(state.reports.filter { !it.verified }) { report ->
@@ -151,7 +180,7 @@ fun SheltersTab(state: AuthorityDashboardState, viewModel: AuthorityDashboardVie
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         item {
-            Text("Shelter Management", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
+            Text(stringResource(R.string.shelter_management), style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
             Spacer(modifier = Modifier.height(8.dp))
         }
         items(state.shelters) { shelter ->
@@ -165,18 +194,18 @@ fun SheltersTab(state: AuthorityDashboardState, viewModel: AuthorityDashboardVie
 
         AlertDialog(
             onDismissRequest = { editingShelter = null },
-            title = { Text("Update ${shelter.name}") },
+            title = { Text("${stringResource(R.string.update_shelter)}: ${shelter.name}") },
             text = {
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    OutlinedTextField(value = capacity, onValueChange = { capacity = it }, label = { Text("Total Capacity") })
-                    OutlinedTextField(value = available, onValueChange = { available = it }, label = { Text("Available Spaces") })
+                    OutlinedTextField(value = capacity, onValueChange = { capacity = it }, label = { Text(stringResource(R.string.capacity)) })
+                    OutlinedTextField(value = available, onValueChange = { available = it }, label = { Text(stringResource(R.string.available)) })
                 }
             },
             confirmButton = {
                 Button(onClick = {
                     viewModel.updateShelter(shelter.copy(capacity = capacity.toIntOrNull() ?: shelter.capacity, available = available.toIntOrNull() ?: shelter.available))
                     editingShelter = null
-                }) { Text("Update") }
+                }) { Text(stringResource(R.string.ok)) }
             }
         )
     }
@@ -190,7 +219,7 @@ fun ReportsTab(state: AuthorityDashboardState, viewModel: AuthorityDashboardView
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         item {
-            Text("Audit Log & Reports", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
+            Text(stringResource(R.string.audit_log), style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
             Spacer(modifier = Modifier.height(8.dp))
         }
         items(state.reports) { report ->
@@ -218,15 +247,15 @@ fun SuggestedRouteCard(route: Route, onApprove: () -> Unit, onReject: () -> Unit
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(Icons.Default.AutoFixHigh, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("Suggested Evacuation Route", fontWeight = FontWeight.Bold)
+                Text(stringResource(R.string.suggested_evac_route), fontWeight = FontWeight.Bold)
             }
             Spacer(modifier = Modifier.height(8.dp))
             Text("For Ward 12 -> ${route.shelterName}", style = MaterialTheme.typography.bodyMedium)
-            Text("Rationale: ${route.rationale.joinToString(", ")}", style = MaterialTheme.typography.bodySmall, color = Color.Gray)
+            Text("${stringResource(R.string.why_this_route)}: ${route.rationale.joinToString(", ")}", style = MaterialTheme.typography.bodySmall, color = Color.Gray)
             Spacer(modifier = Modifier.height(16.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                Button(onClick = onApprove, modifier = Modifier.weight(1f)) { Text("Approve") }
-                OutlinedButton(onClick = onReject, modifier = Modifier.weight(1f)) { Text("Reject") }
+                Button(onClick = onApprove, modifier = Modifier.weight(1f)) { Text(stringResource(R.string.approve)) }
+                OutlinedButton(onClick = onReject, modifier = Modifier.weight(1f)) { Text(stringResource(R.string.reject)) }
             }
         }
     }
@@ -248,8 +277,8 @@ fun ShelterManagementCard(shelter: Shelter, onEdit: () -> Unit) {
             )
             Spacer(modifier = Modifier.height(8.dp))
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                Text("Occupancy: ${shelter.capacity - shelter.available}/${shelter.capacity}", style = MaterialTheme.typography.bodySmall)
-                Text("${shelter.available} spots left", style = MaterialTheme.typography.labelSmall, color = if (shelter.available < 20) Error else Success)
+                Text("${stringResource(R.string.capacity)}: ${shelter.capacity - shelter.available}/${shelter.capacity}", style = MaterialTheme.typography.bodySmall)
+                Text("${shelter.available} ${stringResource(R.string.available)}", style = MaterialTheme.typography.labelSmall, color = if (shelter.available < 20) Error else Success)
             }
         }
     }
@@ -321,7 +350,7 @@ fun ApprovalRequestCard(report: Report, onApprove: () -> Unit, onDelete: () -> U
 fun SystemHealthCard() {
     Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp)) {
         Column(modifier = Modifier.padding(16.dp)) {
-            Text("System Status", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
+            Text(stringResource(R.string.system_status), style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
             Spacer(modifier = Modifier.height(12.dp))
             HealthItem("AI Prediction", true)
             HealthItem("IoT Sensors", true)
