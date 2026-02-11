@@ -1,76 +1,10 @@
 {
   "shelters": [
-    {
-      "id": "s1",
-      "name": "Community Center Shelter",
-      "lat": 28.705,
-      "lng": 77.125,
-      "capacity": 150,
-      "available": 86,
-      "address": "23, River Road, Ward 10",
-      "phone": "+91-9876543210",
-      "open": true,
-      "wheelchairAccessible": true,
-      "supplies": {
-        "food": true,
-        "water": true,
-        "medical": true,
-        "blankets": true
-      }
-    },
-    {
-      "id": "s2",
-      "name": "School Building - Safe Zone",
-      "lat": 28.710,
-      "lng": 77.135,
-      "capacity": 200,
-      "available": 142,
-      "address": "45, Main Street, Ward 8",
-      "phone": "+91-9876543211",
-      "open": true,
-      "wheelchairAccessible": false,
-      "supplies": {
-        "food": true,
-        "water": true,
-        "medical": false,
-        "blankets": true
-      }
-    },
-    {
-      "id": "s3",
-      "name": "Municipal Hall",
-      "lat": 28.695,
-      "lng": 77.115,
-      "capacity": 100,
-      "available": 0,
-      "address": "12, Hill Road, Ward 15",
-      "phone": "+91-9876543212",
-      "open": true,
-      "wheelchairAccessible": true,
-      "supplies": {
-        "food": true,
-        "water": true,
-        "medical": true,
-        "blankets": false
-      }
-    },
-    {
-      "id": "s4",
-      "name": "Sports Complex Shelter",
-      "lat": 28.715,
-      "lng": 77.105,
-      "capacity": 300,
-      "available": 255,
-      "address": "78, Stadium Road, Ward 5",
-      "phone": "+91-9876543213",
-      "open": true,
-      "wheelchairAccessible": true,
-      "supplies": {
-        "food": true,
-        "water": true,
-        "medical": true,
-        "blankets": true
-      }
-    }
+    { "id": "dl_s1", "name": "Yamuna Bank Primary School", "lat": 28.68, "lng": 77.23, "capacity": 200, "available": 45, "address": "Yamuna Bank, Delhi", "phone": "011-234567", "open": true, "wheelchairAccessible": true, "supplies": { "food": true, "water": true, "medical": true, "blankets": true } },
+    { "id": "dl_s2", "name": "Civil Lines Community Hall", "lat": 28.67, "lng": 77.22, "capacity": 150, "available": 120, "address": "Civil Lines, Delhi", "phone": "011-234568", "open": true, "wheelchairAccessible": true, "supplies": { "food": true, "water": true, "medical": false, "blankets": true } },
+    { "id": "bh_s1", "name": "Patna College Ground", "lat": 25.61, "lng": 85.13, "capacity": 500, "available": 230, "address": "Patna Coast, Bihar", "phone": "0612-998877", "open": true, "wheelchairAccessible": false, "supplies": { "food": true, "water": true, "medical": true, "blankets": false } },
+    { "id": "as_s1", "name": "Dispur Stadium Shelter", "lat": 26.14, "lng": 91.73, "capacity": 1000, "available": 850, "address": "Dispur, Guwahati, Assam", "phone": "0361-112233", "open": true, "wheelchairAccessible": true, "supplies": { "food": true, "water": true, "medical": true, "blankets": true } },
+    { "id": "mh_s1", "name": "Dharavi Community Center", "lat": 19.04, "lng": 72.85, "capacity": 300, "available": 15, "address": "Dharavi, Mumbai", "phone": "022-554433", "open": true, "wheelchairAccessible": true, "supplies": { "food": true, "water": true, "medical": true, "blankets": true } },
+    { "id": "wb_s1", "name": "Howrah Station Hall", "lat": 22.58, "lng": 88.34, "capacity": 400, "available": 110, "address": "Howrah, Kolkata", "phone": "033-667788", "open": true, "wheelchairAccessible": true, "supplies": { "food": true, "water": true, "medical": true, "blankets": true } }
   ]
 }

@@ -15,6 +15,7 @@ import com.rainguard.ai.ui.screens.chat.ChatAssistantScreen
 import com.rainguard.ai.ui.screens.home.HomeMapScreen
 import com.rainguard.ai.ui.screens.onboarding.OnboardingScreen
 import com.rainguard.ai.ui.screens.report.ReportScreen
+import com.rainguard.ai.ui.screens.route.ARNavigationScreen
 import com.rainguard.ai.ui.screens.route.EvacuationRouteScreen
 import com.rainguard.ai.ui.screens.settings.SettingsScreen
 import com.rainguard.ai.ui.screens.shelter.ShelterDetailsScreen
@@ -51,6 +52,17 @@ fun NavGraph(
         ) { backStackEntry ->
             val routeId = backStackEntry.arguments?.getString("routeId") ?: return@composable
             EvacuationRouteScreen(
+                routeId = routeId,
+                navController = navController
+            )
+        }
+
+        composable(
+            route = NavRoutes.AR_NAVIGATION,
+            arguments = listOf(navArgument("routeId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val routeId = backStackEntry.arguments?.getString("routeId") ?: return@composable
+            ARNavigationScreen(
                 routeId = routeId,
                 navController = navController
             )

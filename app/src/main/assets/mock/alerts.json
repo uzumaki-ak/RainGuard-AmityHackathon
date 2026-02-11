@@ -1,54 +1,10 @@
 {
   "alerts": [
-    {
-      "id": "a1",
-      "title": "Flood Warning - Ward 12",
-      "message": "URGENT: Heavy rainfall detected upstream. River water levels rising rapidly. Residents of Ward 12 should evacuate to nearest shelter immediately. Avoid low-lying areas.",
-      "severity": "high",
-      "confidence": 0.89,
-      "zoneId": "z1",
-      "timestamp": "2026-02-11T09:00:00Z",
-      "expiresAt": "2026-02-11T18:00:00Z",
-      "mapThumbnail": "https://via.placeholder.com/300x200/D32F2F/FFFFFF?text=Ward+12",
-      "recommendedActions": [
-        "Evacuate to Community Center Shelter",
-        "Move to high ground immediately",
-        "Take emergency supplies and documents",
-        "Call emergency hotline if you need assistance"
-      ]
-    },
-    {
-      "id": "a2",
-      "title": "Watch Alert - Industrial Zone",
-      "message": "WATCH: Drainage systems at 70% capacity in Industrial Zone. Monitor situation closely. Prepare evacuation plans. Heavy rain expected in next 3 hours.",
-      "severity": "medium",
-      "confidence": 0.76,
-      "zoneId": "z2",
-      "timestamp": "2026-02-11T08:30:00Z",
-      "expiresAt": "2026-02-11T15:30:00Z",
-      "mapThumbnail": "https://via.placeholder.com/300x200/F57C00/FFFFFF?text=Industrial+Zone",
-      "recommendedActions": [
-        "Review evacuation routes",
-        "Prepare emergency kit",
-        "Stay tuned for updates",
-        "Move vehicles to higher ground"
-      ]
-    },
-    {
-      "id": "a3",
-      "title": "Advisory - Downtown Area",
-      "message": "ADVISORY: Normal conditions in Downtown Area. Monitoring drainage systems. Stay alert for updates. No immediate action required.",
-      "severity": "low",
-      "confidence": 0.68,
-      "zoneId": "z3",
-      "timestamp": "2026-02-11T10:00:00Z",
-      "expiresAt": "2026-02-11T20:00:00Z",
-      "mapThumbnail": "https://via.placeholder.com/300x200/66BB6A/FFFFFF?text=Downtown",
-      "recommendedActions": [
-        "Continue normal activities",
-        "Keep emergency contacts handy",
-        "Review family emergency plan"
-      ]
-    }
+    { "id": "dl_a1", "title": "Delhi: Yamuna Flood Alert", "message": "URGENT: Yamuna river level rising. Evacuate Yamuna Bank area immediately to Nearest School Shelter.", "severity": "high", "timestamp": "2026-02-11T22:30:00Z", "recommendedActions": ["Evacuate to Primary School", "Avoid low-lying banks"] },
+    { "id": "dl_a2", "title": "Delhi: Laxmi Nagar Watch", "message": "WATCH: Water logging in Laxmi Nagar streets. Residents should stay indoors and clear drains.", "severity": "medium", "timestamp": "2026-02-11T21:45:00Z", "recommendedActions": ["Stay indoors", "Secure belongings"] },
+    { "id": "bh_a1", "title": "Bihar: Patna Coastal Warning", "message": "CRITICAL: Ganga river surge expected. People near Patna coast should move to Higher College Ground.", "severity": "high", "timestamp": "2026-02-11T22:15:00Z", "recommendedActions": ["Move to College Ground", "Collect emergency kit"] },
+    { "id": "as_a1", "title": "Assam: Guwahati Basin Surge", "message": "URGENT: Sudden flood surge in Dispur area. Immediate evacuation required to Stadium Shelter.", "severity": "high", "timestamp": "2026-02-11T23:00:00Z", "recommendedActions": ["Immediate evacuation to Stadium", "Help elderly people"] },
+    { "id": "mh_a1", "title": "Mumbai: Mithi River Overflow", "message": "DANGER: Mithi river overflow. Dharavi residents should move to Community Center immediately.", "severity": "high", "timestamp": "2026-02-11T22:50:00Z", "recommendedActions": ["Move to Community Center", "Avoid narrow lanes"] },
+    { "id": "wb_a1", "title": "Kolkata: Hooghly Surge Advisory", "message": "ADVISORY: Hooghly river level stable but rising. Embankment monitoring active near Howrah.", "severity": "low", "timestamp": "2026-02-11T19:45:00Z", "recommendedActions": ["Monitor news", "Keep emergency numbers ready"] }
   ]
 }

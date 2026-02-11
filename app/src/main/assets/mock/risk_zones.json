@@ -1,85 +1,74 @@
 {
   "zones": [
     {
-      "id": "z1",
-      "name": "Ward 12 - River Area",
+      "id": "delhi_high",
+      "name": "North Delhi - Yamuna Bank",
       "severity": "high",
-      "confidence": 0.87,
-      "geojson": {
-        "type": "Feature",
-        "properties": {
-          "name": "Ward 12"
-        },
-        "geometry": {
-          "type": "Polygon",
-          "coordinates": [
-            [
-              [77.100, 28.700],
-              [77.120, 28.700],
-              [77.120, 28.720],
-              [77.100, 28.720],
-              [77.100, 28.700]
-            ]
-          ]
-        }
-      },
-      "sources": ["satellite-img-2024", "gauge-23", "report-7"],
-      "updated": "2026-02-11T10:30:00Z",
-      "reason": "River overflow detected, water level rising"
+      "confidence": 0.92,
+      "coordinates": [[77.23, 28.68]],
+      "sources": ["satellite-yamuna", "gauge-delhi-1"],
+      "updated": "2026-02-11T22:30:00Z",
+      "reason": "Water level crossed danger mark"
     },
     {
-      "id": "z2",
-      "name": "Industrial Zone",
+      "id": "delhi_med",
+      "name": "East Delhi - Laxmi Nagar",
       "severity": "medium",
-      "confidence": 0.72,
-      "geojson": {
-        "type": "Feature",
-        "properties": {
-          "name": "Industrial"
-        },
-        "geometry": {
-          "type": "Polygon",
-          "coordinates": [
-            [
-              [77.130, 28.690],
-              [77.150, 28.690],
-              [77.150, 28.710],
-              [77.130, 28.710],
-              [77.130, 28.690]
-            ]
-          ]
-        }
-      },
-      "sources": ["sensor-12", "report-15"],
-      "updated": "2026-02-11T09:45:00Z",
-      "reason": "Drainage system at 70% capacity"
+      "confidence": 0.78,
+      "coordinates": [[77.28, 28.63]],
+      "sources": ["report-dl-4"],
+      "updated": "2026-02-11T21:45:00Z",
+      "reason": "Water logging in low-lying residential areas"
     },
     {
-      "id": "z3",
-      "name": "Downtown Area",
+      "id": "bihar_patna",
+      "name": "Patna - Ganga Coast",
+      "severity": "high",
+      "confidence": 0.89,
+      "coordinates": [[85.13, 25.61]],
+      "sources": ["gauge-patna-4"],
+      "updated": "2026-02-11T22:15:00Z",
+      "reason": "Extreme rainfall in catchment areas"
+    },
+    {
+      "id": "assam_guwahati",
+      "name": "Guwahati - Brahmaputra Basin",
+      "severity": "high",
+      "confidence": 0.95,
+      "coordinates": [[91.73, 26.14]],
+      "sources": ["satellite-assam", "sensor-99"],
+      "updated": "2026-02-11T23:00:00Z",
+      "reason": "Sudden rise in river discharge"
+    },
+    {
+      "id": "kerala_kochi",
+      "name": "Kochi - Coastal Backwaters",
+      "severity": "medium",
+      "confidence": 0.74,
+      "coordinates": [[76.26, 9.93]],
+      "sources": ["buoy-kerala-2"],
+      "updated": "2026-02-11T20:30:00Z",
+      "reason": "High tide warning with heavy rainfall"
+    },
+    {
+      "id": "mumbai_suburbs",
+      "name": "Mumbai - Mithi River Area",
+      "severity": "high",
+      "confidence": 0.85,
+      "coordinates": [[72.87, 19.07]],
+      "sources": ["gauge-mumbai-sub"],
+      "updated": "2026-02-11T22:50:00Z",
+      "reason": "Urban flooding due to blocked drainage"
+    },
+    {
+      "id": "bengal_kolkata",
+      "name": "Kolkata - Hooghly River Side",
       "severity": "low",
-      "confidence": 0.65,
-      "geojson": {
-        "type": "Feature",
-        "properties": {
-          "name": "Downtown"
-        },
-        "geometry": {
-          "type": "Polygon",
-          "coordinates": [
-            [
-              [77.080, 28.680],
-              [77.100, 28.680],
-              [77.100, 28.700],
-              [77.080, 28.700],
-              [77.080, 28.680]
-            ]
-          ]
-        }
-      },
-      "sources": ["gauge-18"],
-      "updated": "2026-02-11T10:15:00Z",
-      "reason": "Normal conditions, monitoring drainage"
+      "confidence": 0.62,
+      "coordinates": [[88.36, 22.57]],
+      "sources": ["sensor-wb-12"],
+      "updated": "2026-02-11T19:45:00Z",
+      "reason": "Minor surge, monitoring embankment"
     }
   ]
 }

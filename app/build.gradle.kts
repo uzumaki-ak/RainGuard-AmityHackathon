@@ -22,7 +22,6 @@ android {
             useSupportLibrary = true
         }
 
-        // Add BuildConfig fields
         buildConfigField("String", "GEMINI_API_KEY", "\"AIzaSyCclLndMjoe0q_A0GJkfp3NUGs-XudcEtw\"")
     }
 
@@ -142,6 +141,7 @@ dependencies {
     // ARCore & SceneView
     implementation("com.google.ar:core:1.41.0")
     implementation("io.github.sceneview:arsceneview:0.10.0")
+    implementation("io.github.sceneview:sceneview:0.10.0")
 
     // Testing
     testImplementation("junit:junit:4.13.2")

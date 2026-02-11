@@ -6,6 +6,7 @@ object NavRoutes {
     const val LOGIN_ROLE = "login_role"
     const val HOME_MAP = "home_map"
     const val EVACUATION_ROUTE = "evacuation_route/{routeId}"
+    const val AR_NAVIGATION = "ar_navigation/{routeId}"
     const val ALERTS = "alerts"
     const val REPORT = "report"
     const val CHAT = "chat"
@@ -15,5 +16,6 @@ object NavRoutes {
     const val SETTINGS = "settings"
 
     fun evacuationRoute(routeId: String) = "evacuation_route/$routeId"
+    fun arNavigation(routeId: String) = "ar_navigation/$routeId"
     fun shelter(shelterId: String) = "shelter/$shelterId"
 }

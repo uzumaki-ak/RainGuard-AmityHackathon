@@ -443,28 +443,30 @@ fun OSMMapView(
 
         // Circular Risk Zones
         riskZones.forEach { zone ->
-            val circlePolygon = Polygon(mapView)
-            val center = GeoPoint(zone.coordinates[0][1], zone.coordinates[0][0])
-            val radius = 500.0 // Radius in meters
-            val points = mutableListOf<GeoPoint>()
-            for (i in 0 until 360 step 10) {
-                points.add(calculatePointWithRadius(center, radius, i.toDouble()))
+            // FIXED: Added full safety check for empty coordinates
+            if (zone.coordinates.isNotEmpty() && zone.coordinates[0].size >= 2) {
+                val circlePolygon = Polygon(mapView)
+                val center = GeoPoint(zone.coordinates[0][1], zone.coordinates[0][0])
+                val radius = 500.0 // Radius in meters
+                val points = mutableListOf<GeoPoint>()
+                for (i in 0 until 360 step 10) {
+                    points.add(calculatePointWithRadius(center, radius, i.toDouble()))
+                }
+                circlePolygon.points = points
+                
+                circlePolygon.title = zone.name
+                circlePolygon.snippet = zone.reason
+                
+                val color = when(zone.severity) {
+                    RiskSeverity.HIGH -> android.graphics.Color.argb(80, 255, 0, 0)
+                    RiskSeverity.MEDIUM -> android.graphics.Color.argb(80, 255, 165, 0)
+                    RiskSeverity.LOW -> android.graphics.Color.argb(80, 0, 255, 0)
+                }
+                circlePolygon.fillPaint.color = color
+                circlePolygon.outlinePaint.color = color
+                circlePolygon.outlinePaint.strokeWidth = 2f
+                mapView.overlays.add(circlePolygon)
             }
-            circlePolygon.points = points
-            
-            // Fix empty bubble: Set title and snippet for Polygon
-            circlePolygon.title = zone.name
-            circlePolygon.snippet = zone.reason
-            
-            val color = when(zone.severity) {
-                RiskSeverity.HIGH -> android.graphics.Color.argb(80, 255, 0, 0)
-                RiskSeverity.MEDIUM -> android.graphics.Color.argb(80, 255, 165, 0)
-                RiskSeverity.LOW -> android.graphics.Color.argb(80, 0, 255, 0)
-            }
-            circlePolygon.fillPaint.color = color
-            circlePolygon.outlinePaint.color = color
-            circlePolygon.outlinePaint.strokeWidth = 2f
-            mapView.overlays.add(circlePolygon)
         }
 
         // Active Route
@@ -485,12 +487,8 @@ fun OSMMapView(
                 icon = context.getDrawable(R.drawable.ic_shelter)
                 setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
                 
-                // Allow InfoWindow to show by manually calling showInfoWindow or returning false
                 setOnMarkerClickListener { m, _ ->
                     m.showInfoWindow()
-                    // If we want to navigate immediately, we can do it here, 
-                    // but usually tapping the InfoWindow or a button in it is better.
-                    // For now, let's just trigger the callback
                     onShelterClick(shelter.id)
                     true
                 }

@@ -20,6 +20,10 @@
     <!-- OSMDroid permissions -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
+    <!-- ARCore permissions -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-feature android:name="android.hardware.camera.ar" android:required="true" />
+
     <uses-feature android:name="android.hardware.camera" android:required="false" />
     <uses-feature android:name="android.hardware.location.gps" android:required="false" />
 
@@ -36,6 +40,12 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
 
+        <!-- ARCore meta-data -->
+        <meta-data
+            android:name="com.google.ar.core"
+            android:value="required"
+            tools:replace="android:value" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -47,7 +57,7 @@
             </intent-filter>
         </activity>
 
-        <!-- Service for Per-App Language support on Android 12 and below -->
+        <!-- Service for Per-App Language support -->
         <service
             android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"
             android:enabled="false"
@@ -60,7 +70,6 @@
                 android:value="true" />
         </service>
 
-        <!-- WorkManager initialization -->
         <provider
             android:name="androidx.startup.InitializationProvider"
             android:authorities="${applicationId}.androidx-startup"

@@ -15,7 +15,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -26,9 +25,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.rainguard.ai.R
 import com.rainguard.ai.data.model.RouteSegment
-import com.rainguard.ai.data.model.RiskSeverity
 import com.rainguard.ai.ui.components.ConfidenceBar
 import com.rainguard.ai.ui.components.LoadingIndicator
+import com.rainguard.ai.ui.navigation.NavRoutes
 import com.rainguard.ai.ui.theme.Success
 import com.rainguard.ai.ui.theme.Warning
 import com.rainguard.ai.ui.theme.Error
@@ -53,14 +52,12 @@ fun EvacuationRouteScreen(
         viewModel.loadRoute(routeId)
     }
 
-    var showConfirmDialog by remember { mutableStateOf(false) }
-    var showNavigationStarted by remember { mutableStateOf(false) }
     var showModelTrace by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Route Details") },
+                title = { Text(stringResource(R.string.route_details)) },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "Back")
@@ -143,7 +140,7 @@ fun EvacuationRouteScreen(
                             Spacer(modifier = Modifier.height(16.dp))
                             
                             // Why this route?
-                            Text("Why this route?", fontWeight = FontWeight.Bold)
+                            Text(stringResource(R.string.why_this_route), fontWeight = FontWeight.Bold)
                             route.rationale.forEach { reason ->
                                 Row(modifier = Modifier.padding(vertical = 4.dp)) {
                                     Icon(Icons.Default.Check, contentDescription = null, tint = Success, modifier = Modifier.size(16.dp))
@@ -165,7 +162,7 @@ fun EvacuationRouteScreen(
                                         horizontalArrangement = Arrangement.SpaceBetween,
                                         verticalAlignment = Alignment.CenterVertically
                                     ) {
-                                        Text("Model Trace Data", fontWeight = FontWeight.Bold)
+                                        Text(stringResource(R.string.model_trace), fontWeight = FontWeight.Bold)
                                         Icon(
                                             if (showModelTrace) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
                                             contentDescription = null
@@ -174,7 +171,7 @@ fun EvacuationRouteScreen(
                                     AnimatedVisibility(visible = showModelTrace) {
                                         Column {
                                             Spacer(modifier = Modifier.height(8.dp))
-                                            Text("Sources used for this computation:", style = MaterialTheme.typography.bodySmall)
+                                            Text(stringResource(R.string.sources_used), style = MaterialTheme.typography.bodySmall)
                                             route.sources.forEach { source ->
                                                 Text("• $source", style = MaterialTheme.typography.bodySmall, color = Color.Gray)
                                             }
@@ -199,7 +196,23 @@ fun EvacuationRouteScreen(
 
                     item {
                         Column(modifier = Modifier.padding(16.dp)) {
+                            // AR NAVIGATION BUTTON
                             Button(
+                                onClick = {
+                                    navController.navigate(NavRoutes.arNavigation(route.id))
+                                },
+                                modifier = Modifier.fillMaxWidth(),
+                                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
+                            ) {
+                                Icon(Icons.Default.ViewInAr, contentDescription = null)
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text("START AR NAVIGATION")
+                            }
+                            
+                            Spacer(modifier = Modifier.height(12.dp))
+
+                            // ORIGINAL GOOGLE MAPS NAVIGATION BUTTON
+                            OutlinedButton(
                                 onClick = {
                                     val gmmIntentUri = Uri.parse("google.navigation:q=${route.path.last()[1]},${route.path.last()[0]}")
                                     val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
@@ -210,7 +223,7 @@ fun EvacuationRouteScreen(
                             ) {
                                 Icon(Icons.Default.Navigation, contentDescription = null)
                                 Spacer(modifier = Modifier.width(8.dp))
-                                Text("Start Navigation")
+                                Text("NAVIGATE (GOOGLE MAPS)")
                             }
                             
                             Spacer(modifier = Modifier.height(12.dp))
@@ -222,7 +235,7 @@ fun EvacuationRouteScreen(
                                 ) {
                                     Icon(Icons.Default.Share, contentDescription = null)
                                     Spacer(modifier = Modifier.width(4.dp))
-                                    Text("Share")
+                                    Text(stringResource(R.string.share))
                                 }
                                 OutlinedButton(
                                     onClick = { /* Contact Logic */ },
@@ -230,7 +243,7 @@ fun EvacuationRouteScreen(
                                 ) {
                                     Icon(Icons.Default.ContactPhone, contentDescription = null)
                                     Spacer(modifier = Modifier.width(4.dp))
-                                    Text("Send Alert")
+                                    Text(stringResource(R.string.send_to_contacts))
                                 }
                             }
                             Spacer(modifier = Modifier.height(32.dp))
