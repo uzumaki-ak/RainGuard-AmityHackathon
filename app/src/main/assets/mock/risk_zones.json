@@ -1,0 +1,85 @@
+{
+  "zones": [
+    {
+      "id": "z1",
+      "name": "Ward 12 - River Area",
+      "severity": "high",
+      "confidence": 0.87,
+      "geojson": {
+        "type": "Feature",
+        "properties": {
+          "name": "Ward 12"
+        },
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [77.100, 28.700],
+              [77.120, 28.700],
+              [77.120, 28.720],
+              [77.100, 28.720],
+              [77.100, 28.700]
+            ]
+          ]
+        }
+      },
+      "sources": ["satellite-img-2024", "gauge-23", "report-7"],
+      "updated": "2026-02-11T10:30:00Z",
+      "reason": "River overflow detected, water level rising"
+    },
+    {
+      "id": "z2",
+      "name": "Industrial Zone",
+      "severity": "medium",
+      "confidence": 0.72,
+      "geojson": {
+        "type": "Feature",
+        "properties": {
+          "name": "Industrial"
+        },
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [77.130, 28.690],
+              [77.150, 28.690],
+              [77.150, 28.710],
+              [77.130, 28.710],
+              [77.130, 28.690]
+            ]
+          ]
+        }
+      },
+      "sources": ["sensor-12", "report-15"],
+      "updated": "2026-02-11T09:45:00Z",
+      "reason": "Drainage system at 70% capacity"
+    },
+    {
+      "id": "z3",
+      "name": "Downtown Area",
+      "severity": "low",
+      "confidence": 0.65,
+      "geojson": {
+        "type": "Feature",
+        "properties": {
+          "name": "Downtown"
+        },
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [77.080, 28.680],
+              [77.100, 28.680],
+              [77.100, 28.700],
+              [77.080, 28.700],
+              [77.080, 28.680]
+            ]
+          ]
+        }
+      },
+      "sources": ["gauge-18"],
+      "updated": "2026-02-11T10:15:00Z",
+      "reason": "Normal conditions, monitoring drainage"
+    }
+  ]
+}

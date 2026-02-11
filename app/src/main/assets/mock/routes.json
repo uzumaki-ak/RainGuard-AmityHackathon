@@ -1,0 +1,47 @@
+{
+  "routes": [
+    {
+      "id": "route1",
+      "shelterId": "s1",
+      "shelterName": "Community Center Shelter",
+      "path": [
+        [77.110, 28.705],
+        [77.115, 28.708],
+        [77.120, 28.710],
+        [77.125, 28.705]
+      ],
+      "etaMinutes": 18,
+      "distanceMeters": 2300,
+      "confidence": 0.78,
+      "segments": [
+        {
+          "from": "Your Location",
+          "to": "River Road Junction",
+          "distanceMeters": 800,
+          "etaSeconds": 480,
+          "hazards": []
+        },
+        {
+          "from": "River Road Junction",
+          "to": "Main Street",
+          "distanceMeters": 900,
+          "etaSeconds": 540,
+          "hazards": ["water"]
+        },
+        {
+          "from": "Main Street",
+          "to": "Community Center Shelter",
+          "distanceMeters": 600,
+          "etaSeconds": 360,
+          "hazards": []
+        }
+      ],
+      "sources": ["satellite-2024", "sensor-12", "report-7"],
+      "rationale": [
+        "Avoids flooded River Street (currently 1.2m water depth)",
+        "Uses elevated Main Street bridge",
+        "Destination shelter has 86 available spaces"
+      ]
+    }
+  ]
+}

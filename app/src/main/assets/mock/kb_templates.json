@@ -1,0 +1,53 @@
+{
+  "templates": [
+    {
+      "id": "q1",
+      "keywords": ["shelter", "nearest", "where", "closest"],
+      "response": "The nearest shelter is Community Center Shelter at 0.9 km. Go north on River Road, then turn right at the junction. Shelter has 86 spaces available with food, water, and medical supplies.",
+      "sources": ["shelter-database"],
+      "confidence": 0.92
+    },
+    {
+      "id": "q2",
+      "keywords": ["prepare", "preparation", "what", "do", "ready"],
+      "response": "To prepare for flooding: (1) Move valuable items to upper floors, (2) Pack emergency kit with water, food, medicines, documents, (3) Charge all devices, (4) Know your evacuation route, (5) Stay tuned to alerts.",
+      "sources": ["emergency-guidelines"],
+      "confidence": 0.95
+    },
+    {
+      "id": "q3",
+      "keywords": ["help", "emergency", "stuck", "rescue", "danger"],
+      "response": "If you need immediate help: (1) Call emergency services at 112, (2) Share your exact location, (3) Move to highest safe point, (4) Signal for help visibly, (5) Stay calm and don't enter floodwater. Help is on the way.",
+      "sources": ["emergency-protocol"],
+      "confidence": 0.98
+    },
+    {
+      "id": "q4",
+      "keywords": ["water", "safe", "drink", "food"],
+      "response": "During flooding: Do NOT drink tap water until authorities confirm it's safe. Use bottled water only. Avoid food that has contacted floodwater. Shelters provide clean water and food supplies.",
+      "sources": ["health-guidelines"],
+      "confidence": 0.90
+    },
+    {
+      "id": "q5",
+      "keywords": ["evacuation", "route", "how", "get", "path"],
+      "response": "Your safest evacuation route uses Main Street Bridge (elevated, no flooding). Avoid River Street (1.2m water depth). Estimated time: 18 minutes to Community Center Shelter. Navigate via the app's Evacuate button.",
+      "sources": ["route-system", "sensor-data"],
+      "confidence": 0.82
+    },
+    {
+      "id": "q6",
+      "keywords": ["risk", "danger", "level", "area", "zone"],
+      "response": "Current risk in your area: HIGH (87% confidence). River overflow detected with water levels rising. Immediate evacuation recommended. Check the map for detailed risk zones.",
+      "sources": ["satellite-img", "gauge-23"],
+      "confidence": 0.87
+    },
+    {
+      "id": "default",
+      "keywords": [],
+      "response": "I can help with: finding shelters, evacuation routes, flood preparation tips, and emergency contacts. For medical or legal advice, please contact professionals. In life-threatening situations, call 112 immediately.",
+      "sources": ["system"],
+      "confidence": 0.50
+    }
+  ]
+}

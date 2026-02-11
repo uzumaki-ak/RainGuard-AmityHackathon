@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary Colors (Disaster Management Theme) -->
+    <color name="primary">#1565C0</color>
+    <color name="primary_dark">#0D47A1</color>
+    <color name="primary_light">#42A5F5</color>
+
+    <!-- Secondary (Safety Green) -->
+    <color name="secondary">#2E7D32</color>
+    <color name="secondary_dark">#1B5E20</color>
+    <color name="secondary_light">#66BB6A</color>
+
+    <!-- Risk Levels -->
+    <color name="risk_high">#D32F2F</color>
+    <color name="risk_medium">#F57C00</color>
+    <color name="risk_low">#66BB6A</color>
+
+    <!-- UI Colors -->
+    <color name="background">#FAFAFA</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="error">#D32F2F</color>
+    <color name="on_primary">#FFFFFF</color>
+    <color name="on_secondary">#FFFFFF</color>
+    <color name="on_background">#212121</color>
+    <color name="on_surface">#212121</color>
+    <color name="on_error">#FFFFFF</color>
+
+    <!-- Text -->
+    <color name="text_primary">#212121</color>
+    <color name="text_secondary">#757575</color>
+    <color name="text_disabled">#BDBDBD</color>
+
+    <!-- Accents -->
+    <color name="accent">#00ACC1</color>
+    <color name="success">#43A047</color>
+    <color name="warning">#FFA726</color>
+
+    <!-- Splash Gradient -->
+    <color name="splash_start">#1A237E</color>
+    <color name="splash_end">#000000</color>
+
+    <!-- Transparent -->
+    <color name="transparent">#00000000</color>
+    <color name="scrim">#80000000</color>
+</resources>

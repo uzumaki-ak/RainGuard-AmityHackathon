@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">RainGuardAI</string>
+
+    <!-- Splash -->
+    <string name="splash_tagline">AI-संचालित बाढ़ पूर्व चेतावनी</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_title_1">हम क्या करते हैं</string>
+    <string name="onboarding_desc_1">हम रीयल-टाइम डेटा को स्पष्ट, स्थानीय निकासी मार्गदर्शन में बदलते हैं</string>
+    <string name="onboarding_title_2">हम कैसे मदद करते हैं</string>
+    <string name="onboarding_desc_2">आपको सुरक्षित रखने के लिए जोखिम मानचित्र, निकासी मार्ग और स्थानीय अलर्ट</string>
+    <string name="onboarding_title_3">गोपनीयता और सुरक्षा</string>
+    <string name="onboarding_desc_3">आपका स्थान डेटा निजी रहता है और केवल आपकी सुरक्षा के लिए उपयोग किया जाता है</string>
+    <string name="allow_location">स्थान की अनुमति दें</string>
+    <string name="enable_notifications">सूचनाएं सक्षम करें</string>
+    <string name="continue_btn">जारी रखें</string>
+    <string name="demo_mode">डेमो मोड</string>
+    <string name="demo_mode_desc">परीक्षण के लिए सिंथेटिक डेटा का उपयोग करें</string>
+    <string name="language">भाषा</string>
+
+    <!-- Role Selection -->
+    <string name="who_are_you">आप कौन हैं?</string>
+    <string name="citizen">नागरिक</string>
+    <string name="citizen_desc">अलर्ट प्राप्त करें, सुरक्षित मार्ग देखें, घटनाओं की रिपोर्ट करें</string>
+    <string name="authority">प्राधिकरण</string>
+    <string name="authority_desc">कार्यों को मंजूरी दें, आश्रयों का प्रबंधन करें, रिपोर्ट देखें</string>
+    <string name="remember_role">इस डिवाइस पर मेरी भूमिका याद रखें</string>
+
+    <!-- Home Map -->
+    <string name="home_title">RainGuardAI</string>
+    <string name="evacuate">निकासी</string>
+    <string name="report_incident">रिपोर्ट</string>
+    <string name="current_risk">वर्तमान जोखिम</string>
+    <string name="risk_high">उच्च</string>
+    <string name="risk_medium">मध्यम</string>
+    <string name="risk_low">कम</string>
+    <string name="nearest_shelter">निकटतम आश्रय</string>
+    <string name="last_updated">अंतिम अपडेट: %s</string>
+    <string name="confidence">आत्मविश्वास: %d%%</string>
+
+    <!-- Evacuation Route -->
+    <string name="safe_route">सुरक्षित मार्ग</string>
+    <string name="destination">गंतव्य</string>
+    <string name="eta">ETA: %d मिनट</string>
+    <string name="distance">दूरी: %.1f किमी</string>
+    <string name="why_this_route">यही मार्ग क्यों?</string>
+    <string name="start_navigation">नेविगेशन शुरू करें</string>
+    <string name="share_route">मार्ग साझा करें</string>
+    <string name="send_to_contacts">संपर्कों को भेजें</string>
+    <string name="low_confidence_warning">इस मार्ग में कम विश्वास है। कृपया आगे बढ़ने से पहले पुष्टि करें।</string>
+    <string name="confirm_route">मार्ग की पुष्टि करें</string>
+
+    <!-- Alerts -->
+    <string name="alerts">अलर्ट</string>
+    <string name="active">सक्रिय</string>
+    <string name="all">सभी</string>
+    <string name="by_area">क्षेत्र के अनुसार</string>
+    <string name="acknowledge">स्वीकार करें</string>
+    <string name="need_help">मदद चाहिए</string>
+    <string name="im_safe">मैं सुरक्षित हूँ</string>
+    <string name="no_alerts">कोई सक्रिय अलर्ट नहीं</string>
+    <string name="no_alerts_desc">आप पूरी तरह अपडेट हैं!</string>
+
+    <!-- Report -->
+    <string name="create_report">रिपोर्ट बनाएँ</string>
+    <string name="report_type">रिपोर्ट का प्रकार</string>
+    <string name="flood">बाढ़</string>
+    <string name="erosion">कटाव</string>
+    <string name="blocked_road">अवरुद्ध सड़क</string>
+    <string name="request_help">मदद मांगें</string>
+    <string name="other">अन्य</string>
+    <string name="location">स्थान</string>
+    <string name="edit_location">स्थान संपादित करें</string>
+    <string name="take_photo">फोटो लें</string>
+    <string name="choose_from_gallery">गैलरी से चुनें</string>
+    <string name="description">विवरण</string>
+    <string name="description_hint">आप क्या देख रहे हैं उसका वर्णन करें (अधिकतम 200 अक्षर)</string>
+    <string name="optional_contact">वैकल्पिक संपर्क</string>
+    <string name="contact_hint">आपका फोन या ईमेल (वैकल्पिक)</string>
+    <string name="submit_report">रिपोर्ट सबमिट करें</string>
+    <string name="save_draft">ड्राफ्ट सहेजें</string>
+    <string name="report_success">रिपोर्ट प्राप्त हुई — सत्यापन लंबित है</string>
+
+    <!-- Chat -->
+    <string name="chat_title">RainGuardAI सहायक</string>
+    <string name="chat_input_hint">मुझसे कुछ भी पूछें…</string>
+    <string name="quick_nearest_shelter">निकटतम आश्रय कहाँ है?</string>
+    <string name="quick_how_to_prepare">तैयारी कैसे करें?</string>
+    <string name="quick_need_help">मुझे मदद चाहिए</string>
+    <string name="sources">स्रोत</string>
+    <string name="send_as_sms">SMS के रूप में भेजें</string>
+
+    <!-- Shelter Details -->
+    <string name="shelter_details">आश्रय विवरण</string>
+    <string name="navigate">नेविगेट करें</string>
+    <string name="share">साझा करें</string>
+    <string name="add_to_saved">सहेजे गए में जोड़ें</string>
+    <string name="capacity">क्षमता</string>
+    <string name="available">उपलब्ध</string>
+    <string name="full">भरा हुआ</string>
+    <string name="open">खुला</string>
+    <string name="closed">बंद</string>
+    <string name="wheelchair_accessible">व्हीलचेयर सुलभ</string>
+    <string name="contact">संपर्क</string>
+    <string name="call">कॉल करें</string>
+
+    <!-- Authority Dashboard -->
+    <string name="dashboard_title">प्राधिकरण डैशबोर्ड</string>
+    <string name="incoming_reports">आने वाली रिपोर्ट</string>
+    <string name="suggested_actions">सुझाए गए कार्य</string>
+    <string name="approve">अनुमोदित करें</string>
+    <string name="reject">अस्वीकार करें</string>
+    <string name="filters">फ़िल्टर</string>
+    <string name="severity">तीव्रता</string>
+    <string name="time_range">समय सीमा</string>
+    <string name="unverified">असत्यापित</string>
+    <string name="export_csv">CSV निर्यात करें</string>
+    <string name="refresh">रिफ्रेश करें</string>
+    <string name="playback">प्लेबैक</string>
+
+    <!-- Settings -->
+    <string name="settings">सेटिंग्स</string>
+    <string name="profile">प्रोफ़ाइल</string>
+    <string name="app_mode">ऐप मोड</string>
+    <string name="localization">स्थानीयकरण</string>
+    <string name="text_size">टेक्स्ट का आकार</string>
+    <string name="small">छोटा</string>
+    <string name="default_size">डिफ़ॉल्ट</string>
+    <string name="large">बड़ा</string>
+    <string name="emergency_contacts">आपातकालीन संपर्क</string>
+    <string name="add_contact">संपर्क जोड़ें</string>
+    <string name="share_app">संपर्क के साथ ऐप साझा करें</string>
+    <string name="privacy_permissions">गोपनीयता और अनुमतियाँ</string>
+    <string name="open_app_settings">ऐप सेटिंग्स खोलें</string>
+    <string name="about">के बारे में</string>
+    <string name="version">वर्जन %s</string>
+    <string name="team">टीम</string>
+    <string name="github">GitHub</string>
+    <string name="privacy_blurb">आपका डेटा एन्क्रिप्टेड है और केवल आपातकालीन प्रतिक्रिया के लिए उपयोग किया जाता है</string>
+    <string name="danger_zone">खतरनाक क्षेत्र</string>
+    <string name="clear_cache">कैश किया गया डेटा साफ़ करें</string>
+    <string name="clear_cache_confirm">क्या आप सुनिश्चित हैं? यह सभी ऑफ़लाइन डेटा को हटा देगा।</string>
+    <string name="yes">हाँ</string>
+    <string name="no">नहीं</string>
+
+    <!-- Common -->
+    <string name="loading">लोड हो रहा है…</string>
+    <string name="error">त्रुटि</string>
+    <string name="retry">पुनः प्रयास करें</string>
+    <string name="cancel">रद्द करें</string>
+    <string name="ok">ठीक है</string>
+    <string name="network_error">नेटवर्क अनुपलब्ध — कैश किया गया डेटा दिखा रहा है</string>
+    <string name="report_queued">रिपोर्ट कतारबद्ध — ऑनलाइन होने पर अपलोड होगी</string>
+</resources>

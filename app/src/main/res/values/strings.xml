@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">RainGuardAI</string>
+
+    <!-- Splash -->
+    <string name="splash_tagline">AI-Powered Flood Early Warning</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_title_1">What We Do</string>
+    <string name="onboarding_desc_1">We convert real-time data into clear, local evacuation guidance</string>
+    <string name="onboarding_title_2">How We Help</string>
+    <string name="onboarding_desc_2">Risk maps, evacuation routes, and local alerts to keep you safe</string>
+    <string name="onboarding_title_3">Privacy &amp; Safety</string>
+    <string name="onboarding_desc_3">Your location data stays private and is used only for your safety</string>
+    <string name="allow_location">Allow Location</string>
+    <string name="enable_notifications">Enable Notifications</string>
+    <string name="continue_btn">Continue</string>
+    <string name="demo_mode">Demo Mode</string>
+    <string name="demo_mode_desc">Use synthetic data for testing</string>
+    <string name="language">Language</string>
+
+    <!-- Role Selection -->
+    <string name="who_are_you">Who are you?</string>
+    <string name="citizen">Citizen</string>
+    <string name="citizen_desc">Receive alerts, view safe routes, report incidents</string>
+    <string name="authority">Authority</string>
+    <string name="authority_desc">Approve actions, manage shelters, view reports</string>
+    <string name="remember_role">Remember my role on this device</string>
+
+    <!-- Home Map -->
+    <string name="home_title">RainGuardAI</string>
+    <string name="evacuate">Evacuate</string>
+    <string name="report_incident">Report</string>
+    <string name="current_risk">Current Risk</string>
+    <string name="risk_high">High</string>
+    <string name="risk_medium">Medium</string>
+    <string name="risk_low">Low</string>
+    <string name="nearest_shelter">Nearest Shelter</string>
+    <string name="last_updated">Last updated: %s</string>
+    <string name="confidence">Confidence: %d%%</string>
+
+    <!-- Evacuation Route -->
+    <string name="safe_route">Safe Route</string>
+    <string name="destination">Destination</string>
+    <string name="eta">ETA: %d min</string>
+    <string name="distance">Distance: %.1f km</string>
+    <string name="why_this_route">Why this route?</string>
+    <string name="start_navigation">Start Navigation</string>
+    <string name="share_route">Share Route</string>
+    <string name="send_to_contacts">Send to Contacts</string>
+    <string name="low_confidence_warning">This route has low confidence. Please confirm before proceeding.</string>
+    <string name="confirm_route">Confirm Route</string>
+
+    <!-- Alerts -->
+    <string name="alerts">Alerts</string>
+    <string name="active">Active</string>
+    <string name="all">All</string>
+    <string name="by_area">By Area</string>
+    <string name="acknowledge">Acknowledge</string>
+    <string name="need_help">Need Help</string>
+    <string name="im_safe">I\'m Safe</string>
+    <string name="no_alerts">No active alerts</string>
+    <string name="no_alerts_desc">You\'re all caught up!</string>
+
+    <!-- Report -->
+    <string name="create_report">Create Report</string>
+    <string name="report_type">Report Type</string>
+    <string name="flood">Flood</string>
+    <string name="erosion">Erosion</string>
+    <string name="blocked_road">Blocked Road</string>
+    <string name="request_help">Request Help</string>
+    <string name="other">Other</string>
+    <string name="location">Location</string>
+    <string name="edit_location">Edit Location</string>
+    <string name="take_photo">Take Photo</string>
+    <string name="choose_from_gallery">Choose from Gallery</string>
+    <string name="description">Description</string>
+    <string name="description_hint">Describe what you\'re seeing (max 200 characters)</string>
+    <string name="optional_contact">Optional Contact</string>
+    <string name="contact_hint">Your phone or email (optional)</string>
+    <string name="submit_report">Submit Report</string>
+    <string name="save_draft">Save Draft</string>
+    <string name="report_success">Report received — verification pending</string>
+
+    <!-- Chat -->
+    <string name="chat_title">RainGuardAI Assistant</string>
+    <string name="chat_input_hint">Ask me anything…</string>
+    <string name="quick_nearest_shelter">Where is nearest shelter?</string>
+    <string name="quick_how_to_prepare">How to prepare?</string>
+    <string name="quick_need_help">I need help</string>
+    <string name="sources">Sources</string>
+    <string name="send_as_sms">Send as SMS</string>
+
+    <!-- Shelter Details -->
+    <string name="shelter_details">Shelter Details</string>
+    <string name="navigate">Navigate</string>
+    <string name="share">Share</string>
+    <string name="add_to_saved">Add to Saved</string>
+    <string name="capacity">Capacity</string>
+    <string name="available">Available</string>
+    <string name="full">Full</string>
+    <string name="open">Open</string>
+    <string name="closed">Closed</string>
+    <string name="wheelchair_accessible">Wheelchair Accessible</string>
+    <string name="contact">Contact</string>
+    <string name="call">Call</string>
+
+    <!-- Authority Dashboard -->
+    <string name="dashboard_title">Authority Dashboard</string>
+    <string name="incoming_reports">Incoming Reports</string>
+    <string name="suggested_actions">Suggested Actions</string>
+    <string name="approve">Approve</string>
+    <string name="reject">Reject</string>
+    <string name="filters">Filters</string>
+    <string name="severity">Severity</string>
+    <string name="time_range">Time Range</string>
+    <string name="unverified">Unverified</string>
+    <string name="export_csv">Export CSV</string>
+    <string name="refresh">Refresh</string>
+    <string name="playback">Playback</string>
+
+    <!-- Settings -->
+    <string name="settings">Settings</string>
+    <string name="profile">Profile</string>
+    <string name="app_mode">App Mode</string>
+    <string name="localization">Localization</string>
+    <string name="text_size">Text Size</string>
+    <string name="small">Small</string>
+    <string name="default_size">Default</string>
+    <string name="large">Large</string>
+    <string name="emergency_contacts">Emergency Contacts</string>
+    <string name="add_contact">Add Contact</string>
+    <string name="share_app">Share App with Contact</string>
+    <string name="privacy_permissions">Privacy &amp; Permissions</string>
+    <string name="open_app_settings">Open App Settings</string>
+    <string name="about">About</string>
+    <string name="version">Version %s</string>
+    <string name="team">Team</string>
+    <string name="github">GitHub</string>
+    <string name="privacy_blurb">Your data is encrypted and used only for emergency response</string>
+    <string name="danger_zone">Danger Zone</string>
+    <string name="clear_cache">Clear Cached Data</string>
+    <string name="clear_cache_confirm">Are you sure? This will remove all offline data.</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
+    <!-- Common -->
+    <string name="loading">Loading…</string>
+    <string name="error">Error</string>
+    <string name="retry">Retry</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+    <string name="network_error">Network unavailable — showing cached data</string>
+    <string name="report_queued">Report queued — will upload when online</string>
+</resources>

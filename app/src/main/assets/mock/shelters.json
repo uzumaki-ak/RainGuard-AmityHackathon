@@ -1,0 +1,76 @@
+{
+  "shelters": [
+    {
+      "id": "s1",
+      "name": "Community Center Shelter",
+      "lat": 28.705,
+      "lng": 77.125,
+      "capacity": 150,
+      "available": 86,
+      "address": "23, River Road, Ward 10",
+      "phone": "+91-9876543210",
+      "open": true,
+      "wheelchairAccessible": true,
+      "supplies": {
+        "food": true,
+        "water": true,
+        "medical": true,
+        "blankets": true
+      }
+    },
+    {
+      "id": "s2",
+      "name": "School Building - Safe Zone",
+      "lat": 28.710,
+      "lng": 77.135,
+      "capacity": 200,
+      "available": 142,
+      "address": "45, Main Street, Ward 8",
+      "phone": "+91-9876543211",
+      "open": true,
+      "wheelchairAccessible": false,
+      "supplies": {
+        "food": true,
+        "water": true,
+        "medical": false,
+        "blankets": true
+      }
+    },
+    {
+      "id": "s3",
+      "name": "Municipal Hall",
+      "lat": 28.695,
+      "lng": 77.115,
+      "capacity": 100,
+      "available": 0,
+      "address": "12, Hill Road, Ward 15",
+      "phone": "+91-9876543212",
+      "open": true,
+      "wheelchairAccessible": true,
+      "supplies": {
+        "food": true,
+        "water": true,
+        "medical": true,
+        "blankets": false
+      }
+    },
+    {
+      "id": "s4",
+      "name": "Sports Complex Shelter",
+      "lat": 28.715,
+      "lng": 77.105,
+      "capacity": 300,
+      "available": 255,
+      "address": "78, Stadium Road, Ward 5",
+      "phone": "+91-9876543213",
+      "open": true,
+      "wheelchairAccessible": true,
+      "supplies": {
+        "food": true,
+        "water": true,
+        "medical": true,
+        "blankets": true
+      }
+    }
+  ]
+}

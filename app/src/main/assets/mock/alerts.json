@@ -1,0 +1,54 @@
+{
+  "alerts": [
+    {
+      "id": "a1",
+      "title": "Flood Warning - Ward 12",
+      "message": "URGENT: Heavy rainfall detected upstream. River water levels rising rapidly. Residents of Ward 12 should evacuate to nearest shelter immediately. Avoid low-lying areas.",
+      "severity": "high",
+      "confidence": 0.89,
+      "zoneId": "z1",
+      "timestamp": "2026-02-11T09:00:00Z",
+      "expiresAt": "2026-02-11T18:00:00Z",
+      "mapThumbnail": "https://via.placeholder.com/300x200/D32F2F/FFFFFF?text=Ward+12",
+      "recommendedActions": [
+        "Evacuate to Community Center Shelter",
+        "Move to high ground immediately",
+        "Take emergency supplies and documents",
+        "Call emergency hotline if you need assistance"
+      ]
+    },
+    {
+      "id": "a2",
+      "title": "Watch Alert - Industrial Zone",
+      "message": "WATCH: Drainage systems at 70% capacity in Industrial Zone. Monitor situation closely. Prepare evacuation plans. Heavy rain expected in next 3 hours.",
+      "severity": "medium",
+      "confidence": 0.76,
+      "zoneId": "z2",
+      "timestamp": "2026-02-11T08:30:00Z",
+      "expiresAt": "2026-02-11T15:30:00Z",
+      "mapThumbnail": "https://via.placeholder.com/300x200/F57C00/FFFFFF?text=Industrial+Zone",
+      "recommendedActions": [
+        "Review evacuation routes",
+        "Prepare emergency kit",
+        "Stay tuned for updates",
+        "Move vehicles to higher ground"
+      ]
+    },
+    {
+      "id": "a3",
+      "title": "Advisory - Downtown Area",
+      "message": "ADVISORY: Normal conditions in Downtown Area. Monitoring drainage systems. Stay alert for updates. No immediate action required.",
+      "severity": "low",
+      "confidence": 0.68,
+      "zoneId": "z3",
+      "timestamp": "2026-02-11T10:00:00Z",
+      "expiresAt": "2026-02-11T20:00:00Z",
+      "mapThumbnail": "https://via.placeholder.com/300x200/66BB6A/FFFFFF?text=Downtown",
+      "recommendedActions": [
+        "Continue normal activities",
+        "Keep emergency contacts handy",
+        "Review family emergency plan"
+      ]
+    }
+  ]
+}

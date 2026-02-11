@@ -1,0 +1,86 @@
+# =========================
+# Gradle
+# =========================
+.gradle/
+build/
+*/build/
+
+# =========================
+# Local configuration
+# =========================
+local.properties
+
+# =========================
+# Android Studio / IntelliJ
+# =========================
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# =========================
+# OS junk
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Logs
+# =========================
+*.log
+
+# =========================
+# APK / AAB outputs
+# =========================
+*.apk
+*.aab
+
+# =========================
+# Generated files
+# =========================
+captures/
+.externalNativeBuild/
+.cxx/
+
+# =========================
+# Kotlin / Java
+# =========================
+*.class
+
+# =========================
+# NDK
+# =========================
+obj/
+
+# =========================
+# Secrets / env
+# =========================
+*.jks
+*.keystore
+google-services.json
+*.properties
+
+# =========================
+# Debug / profiling
+# =========================
+profile/
+benchmark/
+
+# =========================
+# Firebase Crashlytics
+# =========================
+crashlytics.properties
+fabric.properties
+
+# =========================
+# Temporary files
+# =========================
+*.tmp
+*.bak
+*.swp
+
+# =========================
+# Mock / local demo data (optional)
+# =========================
+mock-data/*.local.json
+mock-data/uploads/

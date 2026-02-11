@@ -1,0 +1,48 @@
+{
+  "reports": [
+    {
+      "id": "r1",
+      "type": "flood",
+      "lat": 28.702,
+      "lng": 77.118,
+      "photoUrl": "https://images.unsplash.com/photo-1547683905-f686c993aae5?w=400",
+      "description": "Water at knee level, road completely flooded",
+      "timestamp": "2026-02-11T09:45:00Z",
+      "verified": true,
+      "reporterContact": "citizen123@example.com"
+    },
+    {
+      "id": "r2",
+      "type": "blocked_road",
+      "lat": 28.708,
+      "lng": 77.132,
+      "photoUrl": "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=400",
+      "description": "Tree fallen, blocking main road",
+      "timestamp": "2026-02-11T08:30:00Z",
+      "verified": true,
+      "reporterContact": "+91-9988776655"
+    },
+    {
+      "id": "r3",
+      "type": "erosion",
+      "lat": 28.698,
+      "lng": 77.108,
+      "photoUrl": "https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?w=400",
+      "description": "Riverbank erosion visible, dangerous area",
+      "timestamp": "2026-02-11T07:15:00Z",
+      "verified": false,
+      "reporterContact": null
+    },
+    {
+      "id": "r4",
+      "type": "request_help",
+      "lat": 28.712,
+      "lng": 77.122,
+      "photoUrl": null,
+      "description": "Elderly person needs evacuation assistance",
+      "timestamp": "2026-02-11T10:00:00Z",
+      "verified": false,
+      "reporterContact": "+91-9123456789"
+    }
+  ]
+}
