@@ -2,6 +2,8 @@ package com.rainguard.ai.ui.screens.authority
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.snapshots
 import com.rainguard.ai.data.model.Report
 import com.rainguard.ai.data.model.Route
 import com.rainguard.ai.data.model.Shelter
@@ -14,6 +16,13 @@ import javax.inject.Inject
 
 enum class TimeFilter { DAILY, WEEKLY, MONTHLY }
 
+data class SafeSignal(
+    val id: String = "",
+    val userName: String = "",
+    val status: String = "",
+    val timestamp: String = ""
+)
+
 data class AuthorityDashboardState(
     val isLoading: Boolean = false,
     val totalReports: Int = 0,
@@ -21,7 +30,9 @@ data class AuthorityDashboardState(
     val approvedReports: Int = 0,
     val activeAlerts: Int = 0,
     val reports: List<Report> = emptyList(),
+    val allReports: List<Report> = emptyList(),
     val shelters: List<Shelter> = emptyList(),
+    val safeSignals: List<SafeSignal> = emptyList(),
     val riskTrends: List<Float> = listOf(0.2f, 0.4f, 0.3f, 0.7f, 0.9f, 0.8f, 0.6f, 0.9f),
     val selectedFilter: TimeFilter = TimeFilter.DAILY,
     val lastSyncTime: String = "Just now",
@@ -35,10 +46,13 @@ class AuthorityDashboardViewModel @Inject constructor(
 ) : ViewModel() {
     private val _state = MutableStateFlow(AuthorityDashboardState())
     val state: StateFlow<AuthorityDashboardState> = _state.asStateFlow()
+    
+    private val firestore = FirebaseFirestore.getInstance()
 
     init {
         observeReports()
         observeShelters()
+        observeSafeSignals()
         loadSuggestedRoute()
     }
 
@@ -50,6 +64,7 @@ class AuthorityDashboardViewModel @Inject constructor(
                 
                 _state.update { it.copy(
                     reports = pending,
+                    allReports = allReports,
                     totalReports = allReports.size,
                     pendingReports = pending.size,
                     approvedReports = approved.size,
@@ -67,8 +82,30 @@ class AuthorityDashboardViewModel @Inject constructor(
         }
     }
     
+    private fun observeSafeSignals() {
+        // LISTEN LIVE FOR "I'M SAFE" BUTTON CLICKS
+        viewModelScope.launch {
+            firestore.collection("safe_signals")
+                .snapshots()
+                .map { snapshot ->
+                    snapshot.documents.mapNotNull { doc ->
+                        try {
+                            SafeSignal(
+                                id = doc.id,
+                                userName = doc.getString("userName") ?: "Citizen",
+                                status = doc.getString("status") ?: "SAFE",
+                                timestamp = doc.getString("timestamp") ?: ""
+                            )
+                        } catch (e: Exception) { null }
+                    }
+                }
+                .collect { signals ->
+                    _state.update { it.copy(safeSignals = signals.sortedByDescending { it.timestamp }) }
+                }
+        }
+    }
+    
     private fun loadSuggestedRoute() {
-        // Mock a suggested route for approval
         _state.update {
             it.copy(
                 suggestedRoute = Route(
@@ -104,7 +141,6 @@ class AuthorityDashboardViewModel @Inject constructor(
     }
     
     fun approveRoute(routeId: String) {
-        // In a real app, this would trigger a notification or update a route status
         _state.update { it.copy(suggestedRoute = null) }
     }
 

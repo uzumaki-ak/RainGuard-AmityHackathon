@@ -57,7 +57,7 @@ obj/
 # =========================
 *.jks
 *.keystore
-google-services.json
+#app/google-services.json
 *.properties
 
 # =========================

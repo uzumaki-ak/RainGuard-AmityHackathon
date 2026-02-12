@@ -1,5 +1,6 @@
 package com.rainguard.ai.ui.screens.authority
 
+import android.content.Context
 import androidx.compose.animation.*
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -18,20 +19,28 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.rainguard.ai.R
 import com.rainguard.ai.data.model.Report
+import com.rainguard.ai.data.model.ReportType
 import com.rainguard.ai.data.model.Route
 import com.rainguard.ai.data.model.Shelter
 import com.rainguard.ai.ui.navigation.NavRoutes
 import com.rainguard.ai.ui.theme.*
 import com.rainguard.ai.ui.utils.DateTimeUtils
+import org.osmdroid.config.Configuration
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory
+import org.osmdroid.util.GeoPoint
+import org.osmdroid.views.MapView
+import org.osmdroid.views.overlay.Marker
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -95,14 +104,72 @@ fun AuthorityDashboardScreen(
 
 @Composable
 fun OverviewTab(state: AuthorityDashboardState, viewModel: AuthorityDashboardViewModel, navController: NavController) {
+    val context = LocalContext.current
+    
     LazyColumn(
         modifier = Modifier.fillMaxSize().padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
+        // Live Map Card
+        item {
+            Card(
+                modifier = Modifier.fillMaxWidth().height(250.dp),
+                shape = RoundedCornerShape(20.dp),
+                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+            ) {
+                Box(modifier = Modifier.fillMaxSize()) {
+                    AuthorityMiniMap(context, state.allReports, onDelete = { viewModel.deleteReport(it) })
+                    Surface(
+                        color = Color.Black.copy(alpha = 0.5f),
+                        shape = RoundedCornerShape(8.dp),
+                        modifier = Modifier.align(Alignment.BottomEnd).padding(8.dp)
+                    ) {
+                        Text("Interactive View", color = Color.White, style = MaterialTheme.typography.labelSmall, modifier = Modifier.padding(8.dp))
+                    }
+                }
+            }
+        }
+
+        // Stats
         item {
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                 StatCard(stringResource(R.string.active_reports), state.pendingReports.toString(), Icons.Default.Report, Warning, Modifier.weight(1f))
-                StatCard(stringResource(R.string.risk_level), "HIGH", Icons.Default.TrendingUp, Error, Modifier.weight(1f))
+                StatCard("Safe Count", state.safeSignals.size.toString(), Icons.Default.CheckCircle, Success, Modifier.weight(1f))
+            }
+        }
+
+        // Life Safety Live Feed
+        item {
+            Text("Life Safety Feed (Live)", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+            Spacer(modifier = Modifier.height(8.dp))
+            Card(
+                modifier = Modifier.fillMaxWidth().heightIn(max = 200.dp),
+                colors = CardDefaults.cardColors(containerColor = Success.copy(alpha = 0.05f)),
+                border = BorderStroke(1.dp, Success.copy(alpha = 0.2f))
+            ) {
+                if (state.safeSignals.isEmpty()) {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        Text("No signals received yet", style = MaterialTheme.typography.bodySmall, color = Color.Gray)
+                    }
+                } else {
+                    LazyColumn(modifier = Modifier.padding(8.dp)) {
+                        items(state.safeSignals) { signal ->
+                            Row(
+                                modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Icon(Icons.Default.Person, null, tint = Success, modifier = Modifier.size(16.dp))
+                                    Spacer(Modifier.width(8.dp))
+                                    Text(signal.userName, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold)
+                                }
+                                Text(DateTimeUtils.getRelativeTime(signal.timestamp), style = MaterialTheme.typography.labelSmall, color = Color.Gray)
+                            }
+                            Divider(color = Success.copy(alpha = 0.1f))
+                        }
+                    }
+                }
             }
         }
 
@@ -117,28 +184,6 @@ fun OverviewTab(state: AuthorityDashboardState, viewModel: AuthorityDashboardVie
         item {
             Text(stringResource(R.string.regional_risk_index), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
             Spacer(modifier = Modifier.height(8.dp))
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                TimeFilter.values().forEach { filter ->
-                    val filterLabel = when(filter) {
-                        TimeFilter.DAILY -> stringResource(R.string.daily)
-                        TimeFilter.WEEKLY -> stringResource(R.string.weekly)
-                        TimeFilter.MONTHLY -> stringResource(R.string.monthly)
-                    }
-                    FilterChip(
-                        selected = state.selectedFilter == filter,
-                        onClick = { viewModel.setFilter(filter) },
-                        label = { Text(filterLabel) },
-                        colors = FilterChipDefaults.filterChipColors(
-                            selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
-                            selectedLabelColor = MaterialTheme.colorScheme.primary
-                        )
-                    )
-                }
-            }
-            Spacer(modifier = Modifier.height(8.dp))
             RiskTrendChart(trends = state.riskTrends)
         }
         
@@ -146,6 +191,46 @@ fun OverviewTab(state: AuthorityDashboardState, viewModel: AuthorityDashboardVie
             SystemHealthCard()
         }
     }
+}
+
+@Composable
+fun AuthorityMiniMap(context: Context, reports: List<Report>, onDelete: (String) -> Unit) {
+    val mapView = remember {
+        MapView(context).apply {
+            Configuration.getInstance().load(context, context.getSharedPreferences("osm_auth", Context.MODE_PRIVATE))
+            setTileSource(TileSourceFactory.MAPNIK)
+            setMultiTouchControls(true)
+            controller.setZoom(12.0)
+            controller.setCenter(GeoPoint(28.7041, 77.1025))
+        }
+    }
+
+    LaunchedEffect(reports) {
+        mapView.overlays.clear()
+        reports.forEach { report ->
+            val marker = Marker(mapView).apply {
+                position = GeoPoint(report.lat, report.lng)
+                title = report.type.toDisplayString()
+                snippet = "TAP TO DELETE"
+                icon = context.getDrawable(
+                    when(report.type) {
+                        ReportType.FLOOD -> R.drawable.ic_alert
+                        ReportType.REQUEST_HELP -> R.drawable.ic_citizen
+                        else -> R.drawable.ic_report
+                    }
+                )
+                setOnMarkerClickListener { m, _ ->
+                    onDelete(report.id)
+                    m.closeInfoWindow()
+                    true
+                }
+            }
+            mapView.overlays.add(marker)
+        }
+        mapView.invalidate()
+    }
+
+    AndroidView(factory = { mapView }, modifier = Modifier.fillMaxSize())
 }
 
 @Composable
@@ -229,7 +314,7 @@ fun ReportsTab(state: AuthorityDashboardState, viewModel: AuthorityDashboardView
                     Spacer(modifier = Modifier.width(16.dp))
                     Column {
                         Text(report.type.toDisplayString(), fontWeight = FontWeight.Bold)
-                        Text("Verified by system at ${DateTimeUtils.getRelativeTime(report.timestamp)}", style = MaterialTheme.typography.labelSmall)
+                        Text(stringResource(R.string.verified_by_system, DateTimeUtils.getRelativeTime(report.timestamp)), style = MaterialTheme.typography.labelSmall)
                     }
                 }
             }
@@ -352,9 +437,9 @@ fun SystemHealthCard() {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(stringResource(R.string.system_status), style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
             Spacer(modifier = Modifier.height(12.dp))
-            HealthItem("AI Prediction", true)
-            HealthItem("IoT Sensors", true)
-            HealthItem("Rescue API", true)
+            HealthItem("AI Prediction Engine", true)
+            HealthItem("IoT Sensor Grid", true)
+            HealthItem("Evacuation Router", true)
         }
     }
 }

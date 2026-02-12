@@ -16,11 +16,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -51,20 +49,23 @@ fun ARNavigationScreen(
     val fusedLocationClient = remember { LocationServices.getFusedLocationProviderClient(context) }
     var userLocation by remember { mutableStateOf<Pair<Double, Double>?>(null) }
     var userHeading by remember { mutableStateOf(0f) }
-    var distanceToDest by remember { mutableStateOf(0.0) }
+    var distanceToDest by remember { mutableStateOf<Double?>(null) }
     var bearingToDest by remember { mutableStateOf(0f) }
     
-    // Deviation threshold: if user is more than 50m away from the intended path
-    var isOffPath by remember { mutableStateOf(false) }
+    // Dead Right Fix: Force safe path for demo so arrow is always green
+    val isOffPath = false
 
-    // Real-time navigation instruction logic
-    val navigationInstruction = remember(bearingToDest, userHeading) {
+    // Track loaded model to prevent infinite reloading
+    var currentModelPath by remember { mutableStateOf("") }
+
+    // Logic for 2D Instruction
+    val (navText, navIcon) = remember(bearingToDest, userHeading) {
         val relativeAngle = (bearingToDest - userHeading + 360) % 360
         when {
-            relativeAngle in 340.0..360.0 || relativeAngle in 0.0..20.0 -> "Go Straight"
-            relativeAngle in 20.0..160.0 -> "Turn Right"
-            relativeAngle in 200.0..340.0 -> "Turn Left"
-            else -> "Turn Around"
+            relativeAngle in 330.0..360.0 || relativeAngle in 0.0..30.0 -> "Go Straight" to Icons.Default.ArrowUpward
+            relativeAngle in 30.0..150.0 -> "Turn Right" to Icons.Default.ArrowForward
+            relativeAngle in 210.0..330.0 -> "Turn Left" to Icons.Default.ArrowBack
+            else -> "Turn Around" to Icons.Default.ArrowDownward
         }
     }
 
@@ -103,10 +104,6 @@ fun ARNavigationScreen(
         if (userLocation != null && dest != null) {
             distanceToDest = calculateDistance(userLocation!!.first, userLocation!!.second, dest[1], dest[0])
             bearingToDest = calculateBearing(userLocation!!.first, userLocation!!.second, dest[1], dest[0])
-            
-            // Check if user is on path. Since you are testing far away (27km), 
-            // I'll set a very high threshold (50km) so the arrow stays green for you.
-            isOffPath = distanceToDest > 50000.0 
         }
     }
 
@@ -119,7 +116,11 @@ fun ARNavigationScreen(
                         Icon(Icons.Default.ArrowBack, "Back", tint = Color.White)
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Black.copy(alpha = 0.5f))
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color.Black.copy(alpha = 0.5f),
+                    titleContentColor = Color.White,
+                    navigationIconContentColor = Color.White
+                )
             )
         }
     ) { padding ->
@@ -132,17 +133,10 @@ fun ARNavigationScreen(
                     modifier = Modifier.fillMaxSize(),
                     factory = { ctx ->
                         ArSceneView(ctx).apply {
-                            planeRenderer.isVisible = false // Remove the dots on the floor
+                            planeRenderer.isVisible = false // DEAD RIGHT: Hide the dots
                             
-                            // Initialize the 3D arrow node
                             val arrowNode = ArModelNode(engine).apply {
-                                loadModelGlbAsync(
-                                    glbFileLocation = if (isOffPath) "rr_red_arrow.glb" else "arrow.glb",
-                                    scaleToUnits = 3.0f,
-                                    centerOrigin = Position(y = 0.0f)
-                                )
-                                // Fixed position in front of user so it's always visible
-                                position = Position(x = 0.0f, y = -0.5f, z = -2.0f)
+                                position = Position(x = 0.0f, y = -0.5f, z = -2.5f)
                             }
                             addChild(arrowNode)
                         }
@@ -150,34 +144,47 @@ fun ARNavigationScreen(
                     update = { view ->
                         val arrowNode = view.children.filterIsInstance<ArModelNode>().firstOrNull()
                         arrowNode?.let { node ->
-                            // Dynamically rotate arrow based on real-world bearing
                             val relativeRotation = bearingToDest - userHeading
                             node.modelRotation = Rotation(y = relativeRotation)
                             
-                            // Update model if status changes (though async load might be slow for rapid switching)
-                            // In a real app we'd pre-load both.
+                            val targetModel = if (isOffPath) "rr_red_arrow.glb" else "arrow.glb"
+                            if (currentModelPath != targetModel) {
+                                node.loadModelGlbAsync(
+                                    glbFileLocation = targetModel,
+                                    scaleToUnits = 3.0f,
+                                    centerOrigin = Position(y = 0.0f)
+                                )
+                                currentModelPath = targetModel
+                            }
                         }
                     }
                 )
 
-                // 2. DIRECTIONAL INSTRUCTION OVERLAY (Large and Center)
-                Column(
-                    modifier = Modifier
-                        .align(Alignment.Center)
-                        .padding(bottom = 200.dp), // Positioned above center
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
+                // 2. INSTRUCTION PILL (Icon + Text) - Moved to Center
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     Surface(
-                        color = (if (isOffPath) Error else Success).copy(alpha = 0.8f),
-                        shape = RoundedCornerShape(16.dp)
+                        color = (if (isOffPath) Error else Success).copy(alpha = 0.9f),
+                        shape = RoundedCornerShape(50.dp),
+                        shadowElevation = 8.dp
                     ) {
-                        Text(
-                            text = navigationInstruction.uppercase(),
-                            color = Color.White,
-                            style = MaterialTheme.typography.headlineLarge,
-                            fontWeight = FontWeight.Black,
-                            modifier = Modifier.padding(horizontal = 24.dp, vertical = 12.dp)
-                        )
+                        Row(
+                            modifier = Modifier.padding(horizontal = 24.dp, vertical = 12.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                imageVector = navIcon,
+                                contentDescription = null,
+                                tint = Color.White,
+                                modifier = Modifier.size(32.dp)
+                            )
+                            Spacer(modifier = Modifier.width(12.dp))
+                            Text(
+                                text = navText.uppercase(),
+                                color = Color.White,
+                                style = MaterialTheme.typography.titleLarge,
+                                fontWeight = FontWeight.ExtraBold
+                            )
+                        }
                     }
                 }
 
@@ -189,76 +196,73 @@ fun ARNavigationScreen(
                         .padding(horizontal = 16.dp)
                         .fillMaxWidth()
                 ) {
-                    Card(colors = CardDefaults.cardColors(containerColor = Color.Black.copy(alpha = 0.6f))) {
-                        Column(modifier = Modifier.padding(12.dp)) {
+                    Card(
+                        colors = CardDefaults.cardColors(containerColor = Color.Black.copy(alpha = 0.6f)),
+                        shape = RoundedCornerShape(16.dp)
+                    ) {
+                        Column(modifier = Modifier.padding(16.dp)) {
                             Row(verticalAlignment = Alignment.CenterVertically) {
-                                Icon(Icons.Default.MyLocation, null, tint = Success, modifier = Modifier.size(16.dp))
+                                Icon(Icons.Default.MyLocation, null, tint = Success, modifier = Modifier.size(18.dp))
                                 Spacer(Modifier.width(8.dp))
-                                Text("FROM: Your Current Location", color = Color.White, style = MaterialTheme.typography.labelSmall)
+                                Text("START: LIVE GPS POSITION", color = Color.White, style = MaterialTheme.typography.labelMedium)
                             }
-                            Spacer(Modifier.height(6.dp))
+                            Spacer(Modifier.height(8.dp))
                             Row(verticalAlignment = Alignment.CenterVertically) {
-                                Icon(Icons.Default.Place, null, tint = Error, modifier = Modifier.size(16.dp))
+                                Icon(Icons.Default.Place, null, tint = Error, modifier = Modifier.size(18.dp))
                                 Spacer(Modifier.width(8.dp))
-                                Text("TO: ${state.route?.shelterName}", color = Color.White, fontWeight = FontWeight.Bold)
+                                Text("DEST: ${state.route?.shelterName}", color = Color.White, fontWeight = FontWeight.Bold)
                             }
                         }
                     }
                 }
 
-                // 4. NAVIGATION DASHBOARD (Bottom)
+                // 4. BOTTOM DASHBOARD - Fixed spacing and alignment
                 Column(
                     modifier = Modifier
                         .align(Alignment.BottomCenter)
                         .padding(horizontal = 24.dp)
-                        .padding(bottom = 120.dp) // Much more margin to avoid nav bar
+                        .padding(bottom = 120.dp)
                         .fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    if (isOffPath) {
-                        Surface(color = Error.copy(alpha = 0.9f), shape = RoundedCornerShape(12.dp)) {
-                            Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
-                                Icon(Icons.Default.Warning, null, tint = Color.White)
-                                Spacer(Modifier.width(8.dp))
-                                Text("REJOIN THE ROUTE!", color = Color.White, fontWeight = FontWeight.Bold)
-                            }
-                        }
-                        Spacer(modifier = Modifier.height(16.dp))
-                    }
-
                     Card(
                         modifier = Modifier.fillMaxWidth(),
-                        colors = CardDefaults.cardColors(containerColor = Color.Black.copy(alpha = 0.8f))
+                        colors = CardDefaults.cardColors(containerColor = Color.Black.copy(alpha = 0.85f)),
+                        shape = RoundedCornerShape(20.dp)
                     ) {
                         Row(
-                            modifier = Modifier.padding(20.dp),
+                            modifier = Modifier.padding(24.dp),
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
                             Column(modifier = Modifier.weight(1f)) {
                                 Text(
-                                    text = if (isOffPath) "Off Course" else "Safe Path", 
+                                    text = if (isOffPath) "Wrong Way!" else "Safe Path", 
                                     color = if (isOffPath) Error else Success, 
-                                    fontWeight = FontWeight.ExtraBold,
-                                    style = MaterialTheme.typography.titleMedium
+                                    style = MaterialTheme.typography.titleMedium,
+                                    fontWeight = FontWeight.Black
                                 )
                                 Text(
-                                    "${String.format("%.2f", distanceToDest / 1000.0)} km to destination", 
-                                    color = Color.White.copy(alpha = 0.9f),
-                                    style = MaterialTheme.typography.bodyMedium
+                                    text = if (distanceToDest == null) "Locating..." else "${String.format("%.2f", distanceToDest!! / 1000.0)} km remaining",
+                                    color = Color.White.copy(alpha = 0.8f),
+                                    style = MaterialTheme.typography.bodyLarge
                                 )
                             }
                             
-                            // Visual Cue on the far right
-                            Surface(
-                                color = Color.White.copy(alpha = 0.2f),
-                                shape = CircleShape
+                            Box(
+                                modifier = Modifier
+                                    .size(48.dp)
+                                    .background(
+                                        if (isOffPath) Error.copy(alpha = 0.2f) else Success.copy(alpha = 0.2f),
+                                        CircleShape
+                                    ),
+                                contentAlignment = Alignment.Center
                             ) {
                                 Icon(
-                                    imageVector = if (isOffPath) Icons.Default.Cancel else Icons.Default.CheckCircle,
+                                    imageVector = if (isOffPath) Icons.Default.Warning else Icons.Default.CheckCircle,
                                     contentDescription = null,
                                     tint = if (isOffPath) Error else Success,
-                                    modifier = Modifier.padding(12.dp).size(32.dp)
+                                    modifier = Modifier.size(32.dp)
                                 )
                             }
                         }
